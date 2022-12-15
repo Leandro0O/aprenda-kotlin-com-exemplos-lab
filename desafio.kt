@@ -1,21 +1,57 @@
-// [Template no Kotlin Playground](https://pl.kotl.in/WcteahpyN)
+enum class Nivel { BASICO, INTERMEDIARIO, AVANCADO }
 
-enum class Nivel { BASICO, INTERMEDIARIO, DIFICIL }
+data class Usuario(val nome: String) {
 
-class Usuario
+    val numMatricula = { (1000..10000).random().toString() }
 
-data class ConteudoEducacional(var nome: String, val duracao: Int = 60)
+    override fun toString(): String {
+        return "$nome"
+    }
 
-data class Formacao(val nome: String, var conteudos: List<ConteudoEducacional>) {
+}
 
+data class ConteudoEducacional(var nome: String, val duracao: Int) {
+    override fun toString(): String {
+        return "Nome Curso: $nome Duração: $duracao"
+    }
+}
+
+data class Formacao(val nome: String, var conteudos: List<ConteudoEducacional>, val nivel: Nivel) {
     val inscritos = mutableListOf<Usuario>()
-    
-    fun matricular(usuario: Usuario) {
-        TODO("Utilize o parâmetro $usuario para simular uma matrícula (usar a lista de $inscritos).")
+
+    fun inscrever(vararg usuario: Usuario) {
+        inscritos.addAll(usuario)
+    }
+
+    override fun toString(): String {
+        return "Formação: ${nome}\nConteudo Educacional: ${conteudos}\nNivel: ${nivel}\nInscritos: ${inscritos}"
+
     }
 }
 
 fun main() {
-    TODO("Analise as classes modeladas para este domínio de aplicação e pense em formas de evoluí-las.")
-    TODO("Simule alguns cenários de teste. Para isso, crie alguns objetos usando as classes em questão.")
+    val leandro = Usuario("Leandro")
+    val paulo = Usuario("Paulo")
+    val ana = Usuario("Ana")
+    val gustavo = Usuario("Gustavo")
+    val samy = Usuario("Samy")
+    val manu = Usuario("Manu")
+
+    val conteudoEducacionalJava = ConteudoEducacional("Java", 150)
+    val conteudoEducacionalKotlin = ConteudoEducacional("Kotlin", 120)
+    val conteudoEducacionalSpring = ConteudoEducacional("Spring Framework", 100)
+
+    val formacaoJava = Formacao("Java Developer", listOf(conteudoEducacionalJava), Nivel.INTERMEDIARIO)
+    val formacaoKotlin = Formacao("Formação Kotlin Developer", listOf(conteudoEducacionalKotlin), Nivel.BASICO)
+    val formacaoSpring = Formacao("Spring Framework Developer", listOf(conteudoEducacionalSpring), Nivel.AVANCADO)
+
+    formacaoJava.inscrever(leandro,ana)
+    formacaoKotlin.inscrever(paulo,gustavo)
+    formacaoSpring.inscrever(samy,manu)
+
+
+    println("$formacaoKotlin \n")
+    println("$formacaoJava \n")
+    println("$formacaoSpring \n")
+
 }
